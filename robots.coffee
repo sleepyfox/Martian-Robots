@@ -7,15 +7,17 @@ class Robot
   constructor: (@x = 0, @y = 0, @facing = 'N') ->
     @left = {'N':'W', 'W':'S', 'S':'E', 'E':'N'}
     @right = {'N':'E', 'E':'S', 'S':'W', 'W':'N'}
+    @lost = false
 
   forward: ->
+    @lost = true
     null
 
   turnLeft: ->
-    @facing = @left[@facing]
+    @facing = @left[@facing] unless @lost 
 
   turnRight: ->
-    @facing = @right[@facing]
+    @facing = @right[@facing] unless @lost 
  
 exports.Grid = Grid
 exports.Robot = Robot
