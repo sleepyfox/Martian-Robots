@@ -4,6 +4,7 @@ The original problem specification is contained in the file MartianRobots.pdf he
 
 Prerequisites:
 [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/) (comes packaged with Node these days) with the following modules:
+
 * coffee-script
 * jasmine-node 
 

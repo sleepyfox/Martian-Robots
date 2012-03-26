@@ -16,6 +16,12 @@ class Robot
   	  when 'S' then @facing = 'E'
   	  when 'W' then @facing = 'S' 
 
-
+  turnRight: ->
+  	switch @facing
+  	  when 'N' then @facing = 'E'
+  	  when 'W' then @facing = 'N'
+  	  when 'S' then @facing = 'W'
+  	  when 'E' then @facing = 'S' 
+ 
 exports.Grid = Grid
 exports.Robot = Robot

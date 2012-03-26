@@ -34,4 +34,17 @@ describe 'Given a new robot, Robbie, with no paramaters', ->
   it 'when Robbie turns Left again, he should face North', ->
     robbie.turnLeft()
     expect(robbie.facing).toEqual 'N'
-#  it 'when Robbie turns '
+  it 'when Robbie turns Right, he should face East', ->
+    robbie.turnRight()
+    expect(robbie.facing).toEqual 'E'
+  it 'when Robbie turns Right again, he should face South', ->
+    robbie.turnRight()
+    expect(robbie.facing).toEqual 'S'
+  it 'when Robbie turns Right again, he should face West', ->
+    robbie.turnRight()
+    expect(robbie.facing).toEqual 'W'
+  it 'when Robbie turns Right again, he should face North', ->
+    robbie.turnRight()
+    expect(robbie.facing).toEqual 'N'
+
+     
