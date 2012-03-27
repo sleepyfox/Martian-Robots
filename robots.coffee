@@ -84,6 +84,8 @@ class InputInterpreter
     line = @input.shift()
     if (line.match(/^[LRF]+\s*$/) is null)
       throw "Invalid robot instructions"
+    if line.length > 100
+      throw "Robot instructions too long: #{line.length} > 100"
     line
 
 exports.Grid = Grid
