@@ -10,11 +10,11 @@ loadFileToArray = (filePath) ->
   
 describe 'Given a new 1x1 grid (default size)', ->
 
-  surface = new Grid 
+  surface = new Grid
   
   it 'when we calculate the size then it should be equal to 1', ->
     expect(surface.size).toEqual 1
-  it 'when we count the number of dead squares then it should have no dead squares', ->
+  it 'when we count the number of dead squares, then there is none', ->
     expect(surface.deadSquares.length).toEqual 0
   it 'when looking for room to move, then there should be no room North', ->
     expect(surface.ifHasRoomToMove(0, 0, 'N')).toBeFalsy()
@@ -85,7 +85,7 @@ describe 'Given a 1x1 grid and a two new robots, C3PO and R2D2', ->
 
 describe 'Given a non-existant test file', ->
   it 'when we try and load it, then we get an error', ->
-    try 
+    try
       array = loadFileToArray("non-existent-file")
       expect(array).toBeNull()
     catch error
@@ -97,7 +97,7 @@ describe 'Given a one-line test file', ->
   inputInterpreter = {}
 
   beforeEach ->
-    try 
+    try
       array = loadFileToArray("one-line-test-file.dat")
     catch error
       console.error error
@@ -116,13 +116,13 @@ describe 'Given a one-line test file', ->
     expect(inputInterpreter.longitudeSize).toEqual "OUT_OF_BOUNDS"
 
 describe 'Given a simple test file', ->
-  array = [] 
+  array = []
   inputInterpreter = {}
   gort = {}
   instructions = ""
 
   beforeEach ->
-    try 
+    try
       array = loadFileToArray("simple-test-file.dat")
     catch error
       console.error error

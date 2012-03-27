@@ -11,17 +11,17 @@ class Grid
 
   ifHasRoomToMove: (x, y, direction) ->
     if x < @minx or x > @maxx or y < @miny or y > @miny
-      false 
+      false
     else
       switch direction
-        when 'N' 
-          y is not @maxy 
+        when 'N'
+          y is not @maxy
         when 'S'
           y is not @miny
         when 'E'
           x is not @maxx
         when 'W'
-          x is not @minx 
+          x is not @minx
  
 class Robot
   constructor: (@x = 0, @y = 0, @facing = 'N') ->
@@ -31,11 +31,12 @@ class Robot
 
   moveForward: (grid) ->
     # this function returns null if the robot moved safely
-    # if the robot is lost, it returns the composite key of the coordinates and direction
+    # if the robot is lost, it returns the composite key
+    # of the coordinates and direction
     if @lost
       null # lost robots can't move!
     else
-      if grid.ifLostHere(@x, @y, @facing) 
+      if grid.ifLostHere(@x, @y, @facing)
         null # don't move, as have scent here, and not lost
       else
         if grid.ifHasRoomToMove(@x, @y, @facing)
@@ -49,34 +50,40 @@ class Robot
           "#{@x}:#{@y}:#{@facing}" # return the new lost composite key
 
   turnLeft: ->
-    @facing = @left[@facing] unless @lost 
+    @facing = @left[@facing] unless @lost
 
   turnRight: ->
-    @facing = @right[@facing] unless @lost 
+    @facing = @right[@facing] unless @lost
 
 class InputInterpreter
   constructor: (@input) ->
     [long, lat] = @input.shift().split /\s+/
     @longitudeSize = parseInt long
     @latitudeSize = parseInt lat
-    if @longitudeSize > 50 or @longitudeSize < 0 then @longitudeSize = 'OUT_OF_BOUNDS'
-    if @latitudeSize > 50 or @latitudeSize < 0 then @latitudeSize = 'OUT_OF_BOUNDS'
+    if @longitudeSize > 50 or @longitudeSize < 0
+      @longitudeSize = 'OUT_OF_BOUNDS'
+    if @latitudeSize > 50 or @latitudeSize < 0
+      @latitudeSize = 'OUT_OF_BOUNDS'
 
   nextRobot: ->
-    line = @input.shift() 
-    while line.match(/^\d+/) is null 
-      line = @input.shift()    
+    line = @input.shift()
+    while line.match(/^\d+/) is null
+      line = @input.shift()
     [long, lat, dir] = line.split /\s+/
     x = parseInt long
-    if x < 0 or x > @longitudeSize then throw "Robot X parameter #{x} out of bounds"
+    if x < 0 or x > @longitudeSize
+      throw "Robot X parameter #{x} out of bounds"
     y = parseInt lat
-    if y < 0 or y > @latitudeSize then throw "Robot Y parameter #{y} out of bounds"
-    if dir not in ['N', 'S', 'E', 'W'] then throw "Robot facing parameter #{dir} out of bounds"
+    if y < 0 or y > @latitudeSize
+      throw "Robot Y parameter #{y} out of bounds"
+    if dir not in ['N', 'S', 'E', 'W']
+      throw "Robot facing parameter #{dir} out of bounds"
     robot = new Robot x, y, dir
 
   nextRobotInstructions: ->
     line = @input.shift()
-    if (line.match(/^[LRF]+\s*$/) is null) then throw "Invalid robot instructions"
+    if (line.match(/^[LRF]+\s*$/) is null)
+      throw "Invalid robot instructions"
     line
 
 exports.Grid = Grid
