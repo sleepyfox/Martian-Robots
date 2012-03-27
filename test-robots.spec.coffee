@@ -102,7 +102,7 @@ describe 'Given a one-line test file', ->
     catch error
       console.error error
       expect(error).toBeNull() # fail the test suite if error
-    inputInterpreter = new InputInterpreter array
+    inputInterpreter = new InputInterpreter array.slice() # pass by value
 
   it 'when we try and load it, then we get an array', ->
     expect(array).not.toBeNull()
@@ -118,6 +118,8 @@ describe 'Given a one-line test file', ->
 describe 'Given a simple test file', ->
   array = [] 
   inputInterpreter = {}
+  gort = {}
+  instructions = ""
 
   beforeEach ->
     try 
@@ -125,14 +127,20 @@ describe 'Given a simple test file', ->
     catch error
       console.error error
       expect(error).toBeNull() # fail the test suite if error
-    inputInterpreter = new InputInterpreter array
+    inputInterpreter = new InputInterpreter array.slice() # pass by value
     gort = inputInterpreter.nextRobot()
+    instructions = inputInterpreter.nextRobotInstructions()
 
   it 'when we load it, then we get an array of 3 lines', ->
     expect(array.length).toEqual 3
   it 'when we look at the grid specification, then we should see a 5x3 grid', ->
     expect(inputInterpreter.latitudeSize).toEqual 3
     expect(inputInterpreter.longitudeSize).toEqual 5
-  it 'when we look at the first robot, Gort; then we should get a robot object', ->
-    expect(typeof(gort)).toEqual "object"
+  it 'when we look at the first robot, Gort; then we should get a robot at (1,1)', ->
+    expect(gort.x).toEqual 1
+    expect(gort.y).toEqual 1
+  it 'and Gort should be facing East', ->
+    expect(gort.facing).toEqual 'E'
+  it 'and his instructions should be RFRFRFRF', ->
+    expect(instructions).toEqual 'RFRFRFRF'
 

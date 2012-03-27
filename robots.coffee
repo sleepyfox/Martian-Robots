@@ -1,5 +1,3 @@
-FIRST_LINE = 0
-
 class Grid
   constructor: (@minx = 0, @miny = 0, @maxx = 0, @maxy = 0) ->
     @size = (@maxx - @minx + 1) * (@maxy - @miny + 1)
@@ -58,15 +56,28 @@ class Robot
 
 class InputInterpreter
   constructor: (@input) ->
-    [long, lat] = @input[FIRST_LINE].split(/\s+/)
+    [long, lat] = @input.shift().split /\s+/
     @longitudeSize = parseInt long
     @latitudeSize = parseInt lat
     if @longitudeSize > 50 or @longitudeSize < 0 then @longitudeSize = 'OUT_OF_BOUNDS'
     if @latitudeSize > 50 or @latitudeSize < 0 then @latitudeSize = 'OUT_OF_BOUNDS'
 
-  # nextRobot: ->
-  #   while @input.shift().match(/^\s*$/) is null
+  nextRobot: ->
+    line = @input.shift() 
+    while line.match(/^\d+/) is null 
+      line = @input.shift()    
+    [long, lat, dir] = line.split /\s+/
+    x = parseInt long
+    if x < 0 or x > @longitudeSize then throw "Robot X parameter #{x} out of bounds"
+    y = parseInt lat
+    if y < 0 or y > @latitudeSize then throw "Robot Y parameter #{y} out of bounds"
+    if dir not in ['N', 'S', 'E', 'W'] then throw "Robot facing parameter #{dir} out of bounds"
+    robot = new Robot x, y, dir
 
+  nextRobotInstructions: ->
+    line = @input.shift()
+    if (line.match(/^[LRF]+\s*$/) is null) then throw "Invalid robot instructions"
+    line
 
 exports.Grid = Grid
 exports.Robot = Robot
