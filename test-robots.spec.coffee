@@ -61,6 +61,67 @@ describe 'Given a new robot, Robby, with no paramaters', ->
     robby.turnRight()
     expect(robby.facing).toEqual 'N'
 
+describe 'Given an InputInterpreter', ->
+  it 'when fed an empty array, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter [] 
+      expect("CoffeeScript is great!").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "Empty input array!"
+  it 'when we interpret a line of rubbish then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["qwerty is great!"]
+      expect("Must remember to delete this...").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "Grid specification invalid"
+  it 'when we interpret an initial line that has a non-numeric x coordinate, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["one-two 3"]
+      expect("Now is the discount of our winter tent").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "Grid specification invalid"
+  it 'when we interpret an initial line that has a non-numeric y coordinate, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["1 two-three"]
+      expect("Made Gloria Sumner by a ton of pork").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "Grid specification invalid"
+  it 'when we interpret an initial line that has a negative x coordinate, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["-1 2"]
+      expect("Insert meaningful error message here").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "longitudeSize out of bounds -1"
+  it 'when we interpret an initial line that has a negative y coordinate, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["1 -2"]
+      expect("Note to self: give up smoking").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "latitudeSize out of bounds -2"
+  it 'when we interpret an initial line that has a x coordinate > 50, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["101 2"]
+      expect("Insert meaningful error message here").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "longitudeSize out of bounds 101"
+  it 'when we interpret an initial line that has a y coordinate > 50, then we get an error', ->
+    try
+      inputInterpreter = new InputInterpreter ["1 666"]
+      expect("Note to self: give up smoking").toBeNull() # fail fixture if no exception
+    catch error
+      expect(error).toEqual "latitudeSize out of bounds 666"
+
+
+describe 'Given an InputInterpreter and a single line input array', ->
+  array = ["5 3"]
+  inputInterpreter = new InputInterpreter array
+
+  it 'when we interpret this, then we get a 5x3 grid', ->
+    expect(inputInterpreter.longitudeSize).toEqual 5
+    expect(inputInterpreter.latitudeSize).toEqual 3
+  it 'when we ask for robot position, then we get an error', ->
+    expect(inputInterpreter.nextRobot).toThrow "No input"
+
 describe 'Given a 1x1 grid and a two new robots, C3PO and R2D2', ->
   surface = new Grid
   c3po = new Robot
@@ -90,7 +151,7 @@ describe 'Given a non-existant test file', ->
       expect(array).toBeNull()
     catch error
       console.error error
-      expect(error).not.toBeNull()
+      expect(error.message).toEqual 'ENOENT, no such file or directory \'non-existent-file\''
 
 describe 'Given a one-line test file', ->
   array = []
@@ -108,12 +169,12 @@ describe 'Given a one-line test file', ->
     expect(array).not.toBeNull()
   it 'and the array has one line', ->
     expect(array.length).toEqual 1
-  it 'and the line is \"51 -3\"', ->
-    expect(array[0]).toEqual "51 -3"
-  it 'when we ask for latitude, then the interpreter should return OUT_OF_BOUNDS', ->
-    expect(inputInterpreter.latitudeSize).toEqual "OUT_OF_BOUNDS"
-  it 'when we ask for longitude, then the interpreter should return OUT_OF_BOUNDS', ->
-    expect(inputInterpreter.longitudeSize).toEqual "OUT_OF_BOUNDS"
+  it 'and the line is \"1 3\"', ->
+    expect(array[0]).toEqual "1 3"
+  it 'when we ask for latitude, then the interpreter should return 3', ->
+    expect(inputInterpreter.latitudeSize).toEqual 3
+  it 'when we ask for longitude, then the interpreter should return 1', ->
+    expect(inputInterpreter.longitudeSize).toEqual 1
 
 describe 'Given a simple test file', ->
   array = []
@@ -130,7 +191,7 @@ describe 'Given a simple test file', ->
     inputInterpreter = new InputInterpreter array.slice() # pass by value
     gort = inputInterpreter.nextRobot()
     instructions = inputInterpreter.nextRobotInstructions()
-
+ 
   it 'when we load it, then we get an array of 3 lines', ->
     expect(array.length).toEqual 3
   it 'when we look at the grid specification, then we should see a 5x3 grid', ->

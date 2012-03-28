@@ -57,15 +57,19 @@ class Robot
 
 class InputInterpreter
   constructor: (@input) ->
+    throw "Empty input array!" if @input.length is 0
     [long, lat] = @input.shift().split /\s+/
     @longitudeSize = parseInt long
     @latitudeSize = parseInt lat
+    if (isNaN @longitudeSize) or (isNaN @latitudeSize) 
+      throw "Grid specification invalid"
     if @longitudeSize > 50 or @longitudeSize < 0
-      @longitudeSize = 'OUT_OF_BOUNDS'
+      throw "longitudeSize out of bounds #{@longitudeSize}"
     if @latitudeSize > 50 or @latitudeSize < 0
-      @latitudeSize = 'OUT_OF_BOUNDS'
+      throw "latitudeSize out of bounds #{@latitudeSize}"
 
   nextRobot: ->
+    throw "No input" unless @input?
     line = @input.shift()
     while line.match(/^\d+/) is null
       line = @input.shift()
