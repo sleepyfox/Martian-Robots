@@ -1,5 +1,5 @@
-robots = require '../src/robots'
-Grid = robots.Grid
+g = require '../src/Grid'
+Grid = g.Grid
 
 describe 'Given a new 1x1 grid (default size)', ->
 
@@ -8,7 +8,7 @@ describe 'Given a new 1x1 grid (default size)', ->
   it 'when we calculate the size then it should be equal to 1', ->
     expect(surface.size).toEqual 1
   it 'when we count the number of dead squares, then there is none', ->
-    expect(surface.deadSquares.length).toEqual 0
+    expect(surface.getDeadSquares().length).toEqual 0
   it 'when looking for room to move, then there should be no room North', ->
     expect(surface.ifHasRoomToMove(0, 0, 'N')).toBeFalsy()
   it 'when looking for room to move, then there should be no room South', ->
@@ -33,7 +33,7 @@ describe 'Given a new 2x2 grid', ->
   it 'when we calculate the size it should be equal to 4', ->
     expect(surface.size).toEqual 4
   it 'when we count the number of dead squares, then there is none', ->
-    expect(surface.deadSquares.length).toEqual 0
+    expect(surface.getDeadSquares().length).toEqual 0
   it 'when looking for room to move North from (0,0), then there should be room', ->
     expect(surface.ifHasRoomToMove(0, 0, 'N')).toBeTruthy()
   it 'when looking for room to move South from (0,0), then there should be no room', ->

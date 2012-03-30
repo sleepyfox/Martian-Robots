@@ -1,9 +1,12 @@
 fs = require 'fs'
-robots = require '../src/robots'
-Grid = robots.Grid
-Robot = robots.Robot
-InputInterpreter = robots.InputInterpreter
+r = require '../src/Robot'
+g = require '../src/Grid'
+i = require '../src/InputInterpreter'
+Robot = r.Robot
+Grid = g.Grid
+InputInterpreter = i.InputInterpreter
 
+# Helper function
 loadFileToArray = (filePath) ->
   fs.readFileSync(filePath).toString().split("\n")
 
@@ -18,7 +21,7 @@ describe 'Given a new robot, Robby, with no paramaters', ->
     expect(robby.x).toEqual 0
     expect(robby.y).toEqual 0
   it 'when created Robby should not be lost', ->
-    expect(robby.lost).toBeFalsy()
+    expect(robby.isLost()).toBeFalsy()
   it 'when Robby turns Left, he should face West', ->
     robby.turnLeft()
     expect(robby.facing).toEqual 'W'
@@ -63,15 +66,15 @@ describe 'Given a 1x1 grid and a two new robots, C3PO and R2D2', ->
   key = c3po.moveForward(surface)
   
   it 'when C3PO moves forward, he is lost!', ->
-    expect(c3po.lost).toBeTruthy()
+    expect(c3po.isLost()).toBeTruthy()
     expect(key).toBeFalsy()
   it 'and the grid has one dead space', ->
-    expect(surface.deadSquares.length).toEqual 1
+    expect(surface.getDeadSquares().length).toEqual 1
   it 'and the dead space is at (0,0) facing North', ->
-    expect(surface.deadSquares[0]).toEqual "0:0:N"
+    expect(surface.getDeadSquares()[0]).toEqual "0:0:N"
   it 'when R2D2 moves forward, he is not lost', ->
     key2 = r2d2.moveForward(surface)
-    expect(r2d2.lost).toBeFalsy()
+    expect(r2d2.isLost()).toBeFalsy()
     expect(key2).toBeNull()
   it 'and his position is unchanged',  ->
     expect(r2d2.x).toEqual 0
@@ -145,7 +148,7 @@ describe 'Given a the problem test file', ->
   it 'and his facing should be East', ->
     expect(gort.facing).toEqual 'E'
   it 'and he should not be lost', ->
-    expect(gort.lost).toBeFalsy()
+    expect(gort.isLost()).toBeFalsy()
 
   marvin = inputInterpreter.nextRobot()
   instructions2 = inputInterpreter.nextRobotInstructions()
@@ -164,7 +167,7 @@ describe 'Given a the problem test file', ->
   it 'and his facing should be North', ->
     expect(marvin.facing).toEqual 'N'
   it 'and he should be lost', ->
-    expect(marvin.lost).toBeTruthy()
+    expect(marvin.isLost()).toBeTruthy()
 
   k9 = inputInterpreter.nextRobot()
   instructions3 = inputInterpreter.nextRobotInstructions()
@@ -183,5 +186,5 @@ describe 'Given a the problem test file', ->
   it 'and his facing should be South', ->
     expect(k9.facing).toEqual 'S'
   it 'and he should not be lost', ->
-    expect(k9.lost).toBeFalsy()
+    expect(k9.isLost()).toBeFalsy()
 

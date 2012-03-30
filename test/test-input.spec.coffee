@@ -1,5 +1,5 @@
-robots = require '../src/robots'
-InputInterpreter = robots.InputInterpreter
+i = require '../src/InputInterpreter'
+InputInterpreter = i.InputInterpreter
 
 
 describe 'Given an InputInterpreter', ->

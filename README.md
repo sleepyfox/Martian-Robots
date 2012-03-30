@@ -14,7 +14,7 @@ You can install these modules by:
 
 You can run the excercise's test code with:
 
-    jasmine-node --coffee --verbose test-robots.spec.coffee
+    jasmine-node --coffee test
 
 I set up a [watchr](https://github.com/mynyml/watchr) file - robots.watchr - so that the tests are run automatically every time you save a file in your editor, simply run watchr with:
     
