@@ -18,20 +18,12 @@ class Robot
       else
         if grid.ifHasRoomToMove(@x, @y, @facing)
           switch @facing
-            when 'N'
-              @y++
-              true
-            when 'S'
-              @y--
-              true
-            when 'E'
-              @x++
-              true
-            when 'W'
-              @x--
-              true
-            else
-              null # should never get here!
+            when 'N' then @y++
+            when 'S' then @y--
+            when 'E' then @x++
+            when 'W' then @x--
+            else null
+          true
         else
           @_lost = true
           grid.markLost @x, @y, @facing

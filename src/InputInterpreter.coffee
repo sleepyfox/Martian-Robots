@@ -1,4 +1,4 @@
-r = require '../src/Robot'
+r = require '../src/Robot' # needed for nextRobot to return a Robot object
 Robot = r.Robot
 
 class InputInterpreter
