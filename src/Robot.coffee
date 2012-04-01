@@ -7,8 +7,9 @@ class Robot
 
   moveForward: (grid) ->
     # Returns true if the robot moved safely,
-    # if the robot is lost it returns false,
-    # if the robot failed to move it returns null.
+    # if the robot is lost over the edge it returns false,
+    # if the robot failed to move it returns null;
+    # this helps the test code.
     if @_lost or grid.ifLostHere(@x, @y, @facing)
       null # don't move, as have scent here, or lost
     else
