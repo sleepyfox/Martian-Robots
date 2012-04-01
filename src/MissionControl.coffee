@@ -1,13 +1,14 @@
-Robot = (require '../src/Robot').Robot # needed for nextRobot to return a Robot object
+# Require needed for nextRobot to return a Robot object
+Robot = (require '../src/Robot').Robot
 
 class MissionControl
   constructor: (@input) ->
-    if @input.length is 0 
-      throw new Error "No signal from Command" 
+    if @input.length is 0
+      throw new Error "No signal from Command"
     [long, lat] = @input.shift().split /\s+/
     @longitudeSize = parseInt long
     @latitudeSize = parseInt lat
-    if (isNaN @longitudeSize) or (isNaN @latitudeSize) 
+    if (isNaN @longitudeSize) or (isNaN @latitudeSize)
       throw new Error "Grid specification invalid"
     if @longitudeSize > 50 or @longitudeSize < 0
       throw new Error "longitudeSize out of bounds #{@longitudeSize}"
@@ -15,9 +16,9 @@ class MissionControl
       throw new Error "latitudeSize out of bounds #{@latitudeSize}"
 
   nextRobot: ->
-    unless @input? 
+    unless @input?
       throw new Error "No robot specification found"
-    if @input.length is 0 
+    if @input.length is 0
       null # EOF
     else
       line = @input.shift()

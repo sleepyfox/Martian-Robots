@@ -48,13 +48,13 @@ describe 'Given a new robot, Robby, with no paramaters', ->
       robby.processInstructions "", syrtisMajorPlanum
       expect(1).toBeNull()
     catch error
-      expect(error).toEqual "Empty robot instruction string"
+      expect(error.message).toEqual "Empty robot instruction string"
   it "when given a list of instructions that don't consist solely of [FRL] then we get an error", -> 
     try
       robby.processInstructions "T1000", syrtisMajorPlanum
       expect(1).toBeNull()
     catch error
-      expect(error).toEqual "Invalid robot instructions"
+      expect(error.message).toEqual "Invalid robot instructions"
   
 describe 'Given a 1x1 grid and a two new robots, C3PO and R2D2', ->
   syrtisMajorPlanum = new Grid
