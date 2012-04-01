@@ -13,9 +13,11 @@ You can install these modules by:
 	sudo npm install -g coffee-script jasmine-node
 
 You can run the excercise's code with:
+
 	coffee mission-to-mars
 
 You can run all the tests with:
+
     jasmine-node --coffee test
 
 Adding the '--verbose' qualifier will show the test names and test suite titles as well as whether they passed or failed. 
