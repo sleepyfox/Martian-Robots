@@ -4,49 +4,49 @@ describe 'Given a MissionControl', ->
   it 'when fed an empty array, then we get an error', ->
     try
       kennedy = new MissionControl [] 
-      expect("CoffeeScript is great!").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "No signal from Command"
   it 'when we interpret a line of rubbish then we get an error', ->
     try
       kennedy = new MissionControl ["qwerty is great!"]
-      expect("Must remember to delete this...").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "Grid specification invalid"
   it 'when we interpret an initial line that has a non-numeric x coordinate, then we get an error', ->
     try
       kennedy = new MissionControl ["one-two 3"]
-      expect("Now is the discount of our winter tent").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "Grid specification invalid"
   it 'when we interpret an initial line that has a non-numeric y coordinate, then we get an error', ->
     try
       kennedy = new MissionControl ["1 two-three"]
-      expect("Made Gloria Sumner by a ton of pork").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "Grid specification invalid"
   it 'when we interpret an initial line that has a negative x coordinate, then we get an error', ->
     try
       kennedy = new MissionControl ["-1 2"]
-      expect("Insert meaningful error message here").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "longitudeSize out of bounds -1"
   it 'when we interpret an initial line that has a negative y coordinate, then we get an error', ->
     try
       kennedy = new MissionControl ["1 -2"]
-      expect("Note to self: give up smoking").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "latitudeSize out of bounds -2"
   it 'when we interpret an initial line that has a x coordinate > 50, then we get an error', ->
     try
       kennedy = new MissionControl ["101 2"]
-      expect("Insert meaningful error message here").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "longitudeSize out of bounds 101"
   it 'when we interpret an initial line that has a y coordinate > 50, then we get an error', ->
     try
       kennedy = new MissionControl ["1 666"]
-      expect("Note to self: give up smoking").toBeNull() # fail fixture if no exception
+      expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "latitudeSize out of bounds 666"
 
