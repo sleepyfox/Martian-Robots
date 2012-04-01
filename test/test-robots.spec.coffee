@@ -1,10 +1,7 @@
 fs = require 'fs'
-r = require '../src/Robot'
-g = require '../src/Grid'
-i = require '../src/InputInterpreter'
-Robot = r.Robot
-Grid = g.Grid
-InputInterpreter = i.InputInterpreter
+Robot = (require '../src/Robot').Robot 
+Grid = (require '../src/Grid').Grid 
+MissionControl = (require '../src/MissionControl').MissionControl
 
 # Helper function
 loadFileToArray = (filePath) ->
@@ -13,7 +10,7 @@ loadFileToArray = (filePath) ->
 describe 'Given a new robot, Robby, with no paramaters', ->
 
   robby = new Robot
-  surface = new Grid 0, 0, 1, 1 
+  syrtisMajorPlanum = new Grid 0, 0, 1, 1 
 
   it 'when created then Robby should face North', ->
     expect(robby.facing).toEqual 'N'
@@ -48,32 +45,32 @@ describe 'Given a new robot, Robby, with no paramaters', ->
     expect(robby.facing).toEqual 'N'
   it 'when given an empty instruction string then we get an error', ->
     try
-      robby.processInstructions "", surface
+      robby.processInstructions "", syrtisMajorPlanum
       expect(1).toBeNull()
     catch error
       expect(error).toEqual "Empty robot instruction string"
   it "when given a list of instructions that don't consist solely of [FRL] then we get an error", -> 
     try
-      robby.processInstructions "T1000", surface
+      robby.processInstructions "T1000", syrtisMajorPlanum
       expect(1).toBeNull()
     catch error
       expect(error).toEqual "Invalid robot instructions"
   
 describe 'Given a 1x1 grid and a two new robots, C3PO and R2D2', ->
-  surface = new Grid
+  syrtisMajorPlanum = new Grid
   c3po = new Robot
   r2d2 = new Robot
-  key = c3po.moveForward(surface)
+  key = c3po.moveForward(syrtisMajorPlanum)
   
   it 'when C3PO moves forward, he is lost!', ->
     expect(c3po.isLost()).toBeTruthy()
     expect(key).toBeFalsy()
   it 'and the grid has one dead space', ->
-    expect(surface.getDeadSquares().length).toEqual 1
+    expect(syrtisMajorPlanum.deadSquares.length).toEqual 1
   it 'and the dead space is at (0,0) facing North', ->
-    expect(surface.getDeadSquares()[0]).toEqual "0:0:N"
+    expect(syrtisMajorPlanum.deadSquares[0]).toEqual "0:0:N"
   it 'when R2D2 moves forward, he is not lost', ->
-    key2 = r2d2.moveForward(surface)
+    key2 = r2d2.moveForward(syrtisMajorPlanum)
     expect(r2d2.isLost()).toBeFalsy()
     expect(key2).toBeNull()
   it 'and his position is unchanged',  ->
@@ -90,7 +87,7 @@ describe 'Given a non-existant test file', ->
 
 describe 'Given a one-line test file', ->
   array = []
-  inputInterpreter = {}
+  kennedy = {}
 
   beforeEach ->
     try
@@ -98,7 +95,7 @@ describe 'Given a one-line test file', ->
     catch error
       console.error error
       expect(error).toBeNull() # fail the test suite if error
-    inputInterpreter = new InputInterpreter array.slice() # pass by value
+    kennedy = new MissionControl array.slice() # pass by value
 
   it 'when we try and load it, then we get an array', ->
     expect(array).not.toBeNull()
@@ -107,14 +104,13 @@ describe 'Given a one-line test file', ->
   it 'and the line is \"1 3\"', ->
     expect(array[0]).toEqual "1 3"
   it 'when we ask for latitude, then the interpreter should return 3', ->
-    expect(inputInterpreter.latitudeSize).toEqual 3
+    expect(kennedy.latitudeSize).toEqual 3
   it 'when we ask for longitude, then the interpreter should return 1', ->
-    expect(inputInterpreter.longitudeSize).toEqual 1
+    expect(kennedy.longitudeSize).toEqual 1
 
 describe 'Given a the problem test file', ->
   array = []
-  inputInterpreter = {}
-  gort = {}
+  kennedy = gort = {}
   instructions = ""
 
   try
@@ -123,17 +119,16 @@ describe 'Given a the problem test file', ->
     console.error error
     expect(error).toBeNull() # fail the test suite if error
 
+  kennedy = new MissionControl array.slice() # pass by value
+  cydonia = new Grid 0, 0, kennedy.longitudeSize, kennedy.latitudeSize
+  gort = kennedy.nextRobot()
+  instructions = kennedy.nextRobotInstructions()
+
   it 'when we load it, then we get an array of 9 lines', ->
     expect(array.length).toEqual 9
   it 'when we look at the grid specification, then we should see a 5x3 grid', ->
-    expect(inputInterpreter.latitudeSize).toEqual 3
-    expect(inputInterpreter.longitudeSize).toEqual 5
-
-  inputInterpreter = new InputInterpreter array.slice() # pass by value
-  surface = new Grid 0, 0, inputInterpreter.longitudeSize, inputInterpreter.latitudeSize
-  gort = inputInterpreter.nextRobot()
-  instructions = inputInterpreter.nextRobotInstructions()
-
+    expect(kennedy.latitudeSize).toEqual 3
+    expect(kennedy.longitudeSize).toEqual 5
   it 'when we look at the first robot, Gort; then we should get a robot at (1,1)', ->
     expect(gort.x).toEqual 1
     expect(gort.y).toEqual 1
@@ -142,7 +137,7 @@ describe 'Given a the problem test file', ->
   it 'and his instructions should be RFRFRFRF', ->
     expect(instructions).toEqual 'RFRFRFRF'
   it 'when we process the instructions, then Gort should end up at position (1,1)', ->
-    gort.processInstructions(instructions, surface)
+    gort.processInstructions(instructions, cydonia)
     expect(gort.x).toEqual 1
     expect(gort.y).toEqual 1
   it 'and his facing should be East', ->
@@ -150,8 +145,8 @@ describe 'Given a the problem test file', ->
   it 'and he should not be lost', ->
     expect(gort.isLost()).toBeFalsy()
 
-  marvin = inputInterpreter.nextRobot()
-  instructions2 = inputInterpreter.nextRobotInstructions()
+  marvin = kennedy.nextRobot()
+  instructions2 = kennedy.nextRobotInstructions()
 
   it 'when we look at the second robot, Marvin; then we should get a robot at (3,2)', ->
     expect(marvin.x).toEqual 3
@@ -161,7 +156,7 @@ describe 'Given a the problem test file', ->
   it 'and his instructions should be FRRFLLFFRRFLL', ->
     expect(instructions2).toEqual 'FRRFLLFFRRFLL'
   it 'when we process the instructions, then Marvin should end up at position (3,3)', ->
-    marvin.processInstructions(instructions2, surface)
+    marvin.processInstructions(instructions2, cydonia)
     expect(marvin.x).toEqual 3
     expect(marvin.y).toEqual 3
   it 'and his facing should be North', ->
@@ -169,8 +164,8 @@ describe 'Given a the problem test file', ->
   it 'and he should be lost', ->
     expect(marvin.isLost()).toBeTruthy()
 
-  k9 = inputInterpreter.nextRobot()
-  instructions3 = inputInterpreter.nextRobotInstructions()
+  k9 = kennedy.nextRobot()
+  instructions3 = kennedy.nextRobotInstructions()
 
   it 'when we look at the third robot, K9; then we should get a robot at (0,3)', ->
     expect(k9.x).toEqual 0
@@ -180,7 +175,7 @@ describe 'Given a the problem test file', ->
   it 'and his instructions should be LLFFFLFLFL', ->
     expect(instructions3).toEqual 'LLFFFLFLFL'
   it 'when we process the instructions, then K9 should end up at position (2,3)', ->
-    k9.processInstructions(instructions3, surface)
+    k9.processInstructions(instructions3, cydonia)
     expect(k9.x).toEqual 2
     expect(k9.y).toEqual 3
   it 'and his facing should be South', ->
