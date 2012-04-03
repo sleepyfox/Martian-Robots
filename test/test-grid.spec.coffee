@@ -1,5 +1,4 @@
-g = require '../src/Grid'
-Grid = g.Grid
+Grid = (require '../src/Grid').Grid
 
 describe 'Given a new 1x1 grid (default size)', ->
 
@@ -15,7 +14,7 @@ describe 'Given a new 1x1 grid (default size)', ->
 
 describe 'Given a new 2x2 grid', ->
 
-  olympusMons = new Grid 0, 0, 1, 1
+  olympusMons = new Grid 1, 1
   # Fitnesse-stylee fixture table 
   dangerWillRobinson = [
                          [0, 0, {N: true, S: false, E: true, W: false}]

@@ -1,19 +1,20 @@
-# Require needed for nextRobot to return a Robot object
 Robot = (require '../src/Robot').Robot
+Grid = (require '../src/Grid').Grid
 
 class MissionControl
   constructor: (@input) ->
     if @input.length is 0
       throw new Error "No signal from Command"
     [long, lat] = @input.shift().split /\s+/
-    @longitudeSize = parseInt long
-    @latitudeSize = parseInt lat
-    if (isNaN @longitudeSize) or (isNaN @latitudeSize)
+    longitudeSize = parseInt long
+    latitudeSize = parseInt lat
+    if (isNaN longitudeSize) or (isNaN latitudeSize)
       throw new Error "Grid specification invalid"
-    if @longitudeSize > 50 or @longitudeSize < 0
-      throw new Error "longitudeSize out of bounds #{@longitudeSize}"
-    if @latitudeSize > 50 or @latitudeSize < 0
-      throw new Error "latitudeSize out of bounds #{@latitudeSize}"
+    if longitudeSize > 50 or longitudeSize < 0
+      throw new Error "longitudeSize out of bounds #{longitudeSize}"
+    if latitudeSize > 50 or latitudeSize < 0
+      throw new Error "latitudeSize out of bounds #{latitudeSize}"
+    @grid = new Grid longitudeSize, latitudeSize
 
   nextRobot: ->
     unless @input?
@@ -33,7 +34,7 @@ class MissionControl
         throw new Error "Robot Y parameter #{y} out of bounds"
       if dir not in ['N', 'S', 'E', 'W']
         throw new Error "Robot facing parameter #{dir} out of bounds"
-      robot = new Robot x, y, dir
+      robot = new Robot @grid, x, y, dir
 
   nextRobotInstructions: ->
     line = @input.shift()
