@@ -15,7 +15,7 @@ describe 'Given a new 1x1 grid (default size)', ->
 describe 'Given a new 2x2 grid', ->
 
   olympusMons = new Grid 1, 1
-  # Fitnesse-stylee fixture table 
+  # Fitnesse-stylee fixture table
   dangerWillRobinson = [
                          [0, 0, {N: true, S: false, E: true, W: false}]
                          [0, 1, {N: false, S: true, E: true, W: false}]
@@ -32,6 +32,6 @@ describe 'Given a new 2x2 grid', ->
   it 'when we count the number of dead squares, then there is none', ->
     expect(olympusMons.deadSquares.length).toEqual 0
   for [x, y, directions] in dangerWillRobinson
-    for facing, isSafe of directions 
+    for facing, isSafe of directions
       it "Safe to go #{facing} from (#{x},#{y})? should be #{isSafe}", ->
         expect(olympusMons.ifHasRoomToMove(x, y, facing)).toEqual(isSafe)

@@ -1,20 +1,16 @@
-Robot = (require '../src/Robot').Robot 
-Grid = (require '../src/Grid').Grid 
-
-# Helper function
-loadFileToArray = (filePath) ->
-  fs.readFileSync(filePath).toString().split("\n")
+Robot = (require '../src/Robot').Robot
+Grid = (require '../src/Grid').Grid
 
 describe 'Given a new robot, Robby, with no paramaters', ->
   it 'when we create a robot without a grid, then we get an error', ->
     try
-      robby = new Robot 
+      robby = new Robot
       expect(1).toBeNull()
     catch error
-      expect(error.message).toEqual "No grid specified"    
-
+      expect(error.message).toEqual "No grid specified"  
+ 
 describe 'Given a new robot, Robby, with no paramaters', ->
-  syrtisMajorPlanum = new Grid 0, 0, 1, 1 
+  syrtisMajorPlanum = new Grid 0, 0, 1, 1
   robby = new Robot syrtisMajorPlanum
 
   it 'when created then Robby should face North', ->
@@ -54,7 +50,7 @@ describe 'Given a new robot, Robby, with no paramaters', ->
       expect(1).toBeNull()
     catch error
       expect(error.message).toEqual "Empty robot instruction string"
-  it "when given a list of instructions that don't consist solely of [FRL] then we get an error", -> 
+  it "when given a list of instructions that don't consist solely of [FRL] then we get an error", ->
     try
       robby.processInstructions "T1000"
       expect(1).toBeNull()

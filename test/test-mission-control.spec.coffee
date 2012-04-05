@@ -1,22 +1,18 @@
 fs = require 'fs'
 MissionControl = (require '../src/MissionControl').MissionControl
 
-# Helper function
-loadFileToArray = (filePath) ->
-  fs.readFileSync(filePath).toString().split("\n")
-
 describe 'Given a non-existant test file', ->
   it 'when we try and load it, then we get an error', ->
     try
-      array = loadFileToArray("non-existent-file")
+      array = fs.readFileSync("non-existent-file").toString().split("\n")
       expect(array).toBeNull()
     catch error
-      expect(error.message).toEqual 'ENOENT, no such file or directory \'non-existent-file\''
+      expect(error.message).toEqual "ENOENT, no such file or directory \'non-existent-file\'"
 
 describe 'Given a MissionControl', ->
   it 'when fed an empty array, then we get an error', ->
     try
-      kennedy = new MissionControl [] 
+      kennedy = new MissionControl []
       expect(1).toBeNull() # fail fixture if no exception
     catch error
       expect(error.message).toEqual "No signal from Command"
@@ -69,7 +65,7 @@ describe 'Given a one-line test file', ->
 
   beforeEach ->
     try
-      array = loadFileToArray("test/one-line-test-file.dat")
+      array = fs.readFileSync("test/one-line-test-file.dat").toString().split("\n")
     catch error
       console.error error
       expect(error).toBeNull() # fail the test suite if error
@@ -102,7 +98,7 @@ describe 'Given a the problem test file', ->
   instructions = ""
 
   try
-    array = loadFileToArray("test/problem-test-file.dat")
+    array = fs.readFileSync("test/problem-test-file.dat").toString().split("\n")
   catch error
     console.error error
     expect(error).toBeNull() # fail the test suite if error
@@ -154,7 +150,7 @@ describe 'Given a the problem test file', ->
 
   k9 = kennedy.nextRobot()
   instructions3 = kennedy.nextRobotInstructions()
-
+ 
   it 'when we look at the third robot, K9; then we should get a robot at (0,3)', ->
     expect(k9.x).toEqual 0
     expect(k9.y).toEqual 3
